@@ -25,7 +25,7 @@ contract Library is Ownable {
 
     Book[] private bookArray;
 
-    event newBookAdded(uint256 indexed id, string indexed name, uint16 copies);
+    event newBookAdded(uint256 id, string indexed name, uint16 copies);
     event bookBorrowed(address indexed borrower, uint256 indexed id);
     event bookReturned(address indexed borrower, uint256 indexed id);
 
