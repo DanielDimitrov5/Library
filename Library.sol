@@ -25,6 +25,10 @@ contract Library is Ownable {
 
     Book[] private bookArray;
 
+    event newBookAdded(uint256 indexed id, string indexed name, uint16 copies);
+    event bookBorrowed(address indexed borrower, uint256 indexed id);
+    event bookReturned(address indexed borrower, uint256 indexed id);
+
     function addNewBook(string calldata _name, uint16 _copies) public onlyOwner returns(uint256) {
         ++bookCount;
 
@@ -36,6 +40,8 @@ contract Library is Ownable {
 
         books[bookCount] = book;
         bookArray.push(book);
+
+        emit newBookAdded(book.id, _name, _copies);
 
         return bookCount;
     }
@@ -50,6 +56,8 @@ contract Library is Ownable {
         --books[_id].copies;
         borrowed[_id][msg.sender] = true;
         borrowers[_id].push(msg.sender);
+
+        emit bookBorrowed(msg.sender, _id);
     }
 
     function returnBook(uint256 _id) public {
@@ -57,6 +65,8 @@ contract Library is Ownable {
 
         ++books[_id].copies;
         borrowed[_id][msg.sender] = false;
+
+        emit bookReturned(msg.sender, _id);
     }
 
     function getBorrowers(uint _id) public view returns (address[] memory) {
