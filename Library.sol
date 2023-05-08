@@ -3,6 +3,8 @@ pragma solidity 0.8.17;
 
 import "./Ownable.sol";
 
+error Library_CopiesCannotBeZero();
+
 error Library__InvalidBookId(uint256 id);
 error Library__NoCopiesAvailable();
 error Library__BookAlreadyBorrowedByYou();
@@ -30,6 +32,8 @@ contract Library is Ownable {
     event bookReturned(address indexed borrower, uint256 indexed id);
 
     function addNewBook(string calldata _name, uint16 _copies) public onlyOwner returns(uint256) {
+        if(_copies == 0) revert Library_CopiesCannotBeZero();
+
         ++bookCount;
 
         Book memory book =  Book(
